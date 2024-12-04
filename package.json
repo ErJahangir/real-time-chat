@@ -1,0 +1,13 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "this is a chatting app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+    "start": "npm run start --prefix server"
+  },
+  "author": "",
+  "license": "ISC"
+}
