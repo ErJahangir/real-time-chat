@@ -21,8 +21,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => res.send("Hello World!"));
-
 app.use("/auth", routes);
 app.use("/message", messageRoute);
 
