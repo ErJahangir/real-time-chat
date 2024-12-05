@@ -9,11 +9,12 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthImagePattern from "../Component/AuthImagePattern";
 import toast from "react-hot-toast";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -36,7 +37,7 @@ const SignUp = () => {
     e.preventDefault();
     const success = validateForm();
     if (success === true) {
-      signup(formData);
+      signup(formData, navigate);
     }
   };
   return (

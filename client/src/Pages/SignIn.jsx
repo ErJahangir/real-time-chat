@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuthStore } from "../store/userAuthStore";
 import AuthImagePattern from "../Component/AuthImagePattern";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
-import { data, Link } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const SignIn = () => {
@@ -11,6 +11,7 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const { login, isLoggingIn } = useAuthStore();
 
@@ -29,7 +30,7 @@ const SignIn = () => {
     const success = validation();
     if (success === true) {
       // console.log(formData);
-      login(formData);
+      login(formData, navigate);
     }
   };
 

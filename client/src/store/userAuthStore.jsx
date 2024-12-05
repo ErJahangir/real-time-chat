@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
-
 const SocketURL =
   import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
 
@@ -28,14 +27,16 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  signup: async (data) => {
+  signup: async (data, navigate) => {
     set({ isSigningUp: true });
     try {
-      console.log("form Data at store", data);
+      // console.log("form Data at store", data);
       const res = await axiosInstance.post("auth/signup", data);
-      // console.log(res.data);
+      // console.log(res.data.NewUser);
+      set({ authUser: res.data.NewUser });
       get().connectSocket();
       toast.success(res.data.message || "account created successfully");
+      navigate("/");
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {
@@ -45,14 +46,15 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  login: async (data) => {
+  login: async (data, navigate) => {
     set({ isLoggingIn: true });
-    console.log("data from login store", data);
+    // console.log("data from login store", data);
     try {
       const res = await axiosInstance.post("auth/login", data);
-      // console.log(res);
-      // set({authUser:res.data})
+      // console.log(res.data);
+      set({ authUser: res.data.user });
       get().connectSocket();
+      navigate("/");
       toast.success(res.data.message || "logged in successfully");
     } catch (error) {
       // console.log(error.response.data.message);
@@ -62,11 +64,14 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
-  logout: async () => {
+  logout: async (navigate) => {
+    console.log("======>", navigate);
     try {
       const res = await axiosInstance.post("auth/logout");
       toast.success(res.data.message || "logged out successfully");
       get().disconnectSocket();
+      set({ authUser: null });
+      navigate("/login");
     } catch (error) {
       console.log(error.response.data.message || "error to logged out");
     }
